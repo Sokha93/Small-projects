@@ -1,0 +1,72 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Objects</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+    let cnv = document.getElementById('canvas');
+    let ctx = cnv.getContext('2d')
+    let width = 500; height = 100;
+    cnv.width = width;
+    cnv.height = height;
+    cnv.style.backgroundColor = '#B4B4B4';
+
+		var drawRect = (x, y, w, h, a) => {
+			var dx = x + w / 2;
+			var dy = y + h / 2;
+
+			if(a){
+					a = a * (Math.PI / 180)
+					ctx.save();
+					ctx.translate(dx, dy);
+					ctx.rotate(a);
+					ctx.translate(-dx, -dy);
+			}
+
+			ctx.strokeRect(x, y, w, h);
+
+			if(a){
+				ctx.restore();
+			}
+		}
+
+		var x = 10;
+		var y = 10;
+		var a = 0;
+
+		setInterval(() => {
+			ctx.clearRect(0, 0, width, height)
+			drawRect(x, y, 40, 40, a)
+			drawRect(50, y, 40, 40, a)
+			drawRect(90, y, 40, 40, a)
+			drawRect(130, y, 40, 40, a)
+			drawRect(170, y, 40, 40, a)
+			drawRect(210, y, 40, 40, a)
+			drawRect(250, y, 40, 40, a)
+			drawRect(290, y, 40, 40, a)
+			drawRect(330, y, 40, 40, a)
+			drawRect(370, y, 40, 40, a)
+			drawRect(410, y, 40, 40, a)
+			drawRect(450, y, 40, 40, a)
+			drawRect(x, 50, 40, 40, -a)
+			drawRect(50, 50, 40, 40, -a)
+			drawRect(90, 50, 40, 40, -a)
+			drawRect(130, 50, 40, 40, -a)
+			drawRect(170, 50, 40, 40, -a)
+			drawRect(210, 50, 40, 40, -a)
+			drawRect(250, 50, 40, 40, -a)
+			drawRect(290, 50, 40, 40, -a)
+			drawRect(330, 50, 40, 40, -a)
+			drawRect(370, 50, 40, 40, -a)
+			drawRect(410, 50, 40, 40, -a)
+			drawRect(450, 50, 40, 40, -a)
+
+		 a ++;
+		}, 20)
+
+  </script>
+</body>
+</html>

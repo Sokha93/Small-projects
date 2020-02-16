@@ -1,0 +1,32 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Mouse Position</title>
+</head>
+<body>
+  <div id="pos"></div>
+  <div id="pool" style="width: 300; height: 400px; left: 50px; position: absolute; background: yellowgreen;"></div>
+    <div id="cursor" style="width: 50; height: 50px; position: absolute; background: red;"></div>
+
+  <script type="text/javascript">
+    let position = document.getElementById('pos')
+    let cursor = document.getElementById('cursor')
+    let pool = document.getElementById('pool')
+    let x = 0, y = 0;
+    position.innerHTML = "Position "+x+" / "+y
+
+    let pasitn = () => {
+        position.innerHTML = "Position "+x+" / "+y;
+        cursor.style.left = x-25+'px';
+        cursor.style.top = y-25+'px';
+        requestAnimationFrame(pasitn)
+    }
+    pool.onmousemove = (event) => {
+      x = event.pageX;
+        y = event.pageY;
+    };
+    pasitn()
+  </script>
+</body>
+</html>

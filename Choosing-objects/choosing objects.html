@@ -1,0 +1,82 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Click to Objects</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+
+    let canvas = document.getElementById('canvas');
+    let context = canvas.getContext('2d')
+    let width = 500, height = 500;
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.backgroundColor = "#b4b4b4";
+
+		context.fillStyle = "#f4ff57";
+		context.strokeStyle = 'blue';
+		context.lineWidth = 4;
+
+		//
+		var fillRect = function(x, y, w, h) {
+			context.fillRect(x, y, w, h)
+		};
+		var strokeRect = function(x, y, w, h){
+			context.strokeRect(x, y, w, h)
+		};
+
+		//function constructor
+		var Rect = function(x, y, w, h) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.selected = false;
+		};
+
+		Rect.prototype = {
+			draw: function () {
+				fillRect(this.x, this.y, this.w, this.h);
+			},
+			stroke: function () {
+				strokeRect(this.x, this.y, this.w, this.h);
+			},
+			select: function () {
+				this.selected = !this.selected;
+			}
+		};
+
+		var i = 0;
+		var rect = [];
+		for(; i < 5; i++) {
+			rect.push(new Rect(100 + i * (50 + 10), 40, 50, 50));
+		}
+		var isCoursor = function(x, y, rect) {
+			return x > rect.x && x < rect.x + rect.w &&
+			       y > rect.y && y < rect.y + rect.h;
+		}
+
+		canvas.onclick = function(e) {
+			var x = e.pageX,
+          y = e.pageY;
+			for(i in rect) {
+				if(isCoursor(x, y, rect[i]))
+					rect[i].select()
+			}
+		}
+
+		setInterval(function() {
+			context.clearRect(0, 0, width, height)
+			for(i in rect){
+				rect[i].draw();
+				if(rect[i].selected)
+					rect[i].stroke();
+			}
+		}, 20);
+
+
+  </script>
+</body>
+</html>
