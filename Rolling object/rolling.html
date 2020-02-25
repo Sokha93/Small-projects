@@ -1,0 +1,75 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>MINI GAME</title>
+</head>
+<body>
+    <canvas id="canvas" height="500" width="500" style="border: 1px solid"></canvas>
+    <script type="text/javascript">
+
+        let gameEngine;
+
+        let context = document.getElementById('canvas').getContext('2d')    //getContext allow us to draw in canvas.
+
+        var x = 10; // x = width
+        var y = 10; // y = height
+
+         function drawRect(){
+           // canvas.fillStyle = 'black';    //parameter fillStyle - contains colors and templates
+            context.clearRect(0, 0, 500, 500) //
+            context.fillRect(x, y, 50, 50) //method fillRect will create rectamgle
+         }
+
+         let nextStep = (() => {
+            return requestAnimationFrame ||
+            webkitRequestAnimationFrame ||
+            mozRequestAnimationFrame ||
+            oRequestAnimationFrame ||
+            msRequestAnimationFrame ||
+            function (callback) {
+                setTimeout(callback, 1000/60)
+            }
+         })()
+
+         let gameEngineStart = (callback) => {
+             gameEngine = callback
+             gameEngineStep()
+         }
+
+         let gameEngineStep = () => {
+             gameEngine();
+             nextStep(gameEngineStep)
+         }
+
+         let setGameEngine = (callback) => {
+             gameEngine = callback
+         }
+
+         let gameLoopRight = function() {
+             drawRect()
+             x += 5;
+             if(x >= 450) {
+                 setGameEngine(gameLoopLeft)
+             }
+         }
+          
+         let gameLoopLeft = function() {
+             drawRect()
+             x -= 5;
+             if(x <= 0) {
+                 setGameEngine(gameLoopRight)
+             }
+         }
+          
+
+          gameEngineStart(gameLoopRight)
+
+        // let b = setInterval(function() {
+        //     drawRect();
+        //     x += 5
+        // }, 200);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Drag and Drop</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+
+	var mouse = {
+		x : 0,
+		y : 0
+	};
+
+	var selected = false;
+
+    let canvas = document.getElementById('canvas');
+    let context = canvas.getContext('2d')
+    let width = 500, height = 500;
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.backgroundColor = "yellowgreen";
+
+		context.fillStyle = "brown";
+		context.strokeStyle = 'blue';
+		context.lineWidth = 4;
+
+
+		//
+	//	var fillRect = function(x, y, w, h) {
+		//	context.fillRect(x, y, w, h)
+		//};
+		//var strokeRect = function(x, y, w, h){
+			//context.strokeRect(x, y, w, h)
+		//};
+
+		//function constructor
+		var Rect = function(x, y, w, h) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.selected = false;
+		};
+
+		Rect.prototype = {
+			draw: function () {
+				context.fillRect(this.x, this.y, this.w, this.h);
+			},
+			stroke: function () {
+				context.strokeRect(this.x, this.y, this.w, this.h);
+			},
+		//	select: function () {
+			//	this.selected = !this.selected;
+		//	}
+		};
+
+		var isCoursorIn = function(rect) {
+			return mouse.x > rect.x && mouse.x < rect.x + rect.w &&
+						 mouse.y > rect.y && mouse.y < rect.y + rect.h;
+		};
+
+		var i = 0;
+		var rect = [];
+		for(; i < 7; i++) {
+			rect.push(new Rect(30 + i * (50 + 15), 50, 50, 50));
+		}
+	//	var isCoursor = function(x, y, rect) {
+		//	return x > rect.x && x < rect.x + rect.w &&
+		//	       y > rect.y && y < rect.y + rect.h;
+	//	}
+
+		//canvas.onclick = function(e) {
+			//var x = e.pageX,
+      //    y = e.pageY;
+		//	for(i in rect) {
+			//	if(isCoursor(x, y, rect[i]))
+				//	rect[i].select()
+		//	}
+	//	}
+
+
+
+		setInterval(function() {
+			context.clearRect(0, 0, width, height)
+			for(i in rect){
+				rect[i].draw();
+
+				if(isCoursorIn(rect[i])){
+					rect[i].stroke()
+				}
+			}
+				if(selected) {
+					selected.x = mouse.x - selected.w / 2;
+					selected.y = mouse.y - selected.h / 2;
+				}
+			//	if(rect[i].selected)
+				//	rect[i].stroke()
+
+
+		}, 20);
+
+		 	window.onmousemove = function(e) {
+				mouse.x = e.pageX,
+				mouse.y = e.pageY
+			};
+			window.onmousedown = function() {
+				if(!selected){
+					var i;
+					for(i in rect){
+						if(isCoursorIn(rect[i])){
+							selected = rect[i]
+						}
+					}
+				}
+			};
+			window.onmouseup = function() {
+				selected = false;
+			};
+
+  </script>
+</body>
+</html>

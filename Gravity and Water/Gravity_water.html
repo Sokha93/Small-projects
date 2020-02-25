@@ -1,0 +1,123 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Gravity</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+
+
+    let canvas = document.getElementById('canvas');
+    let context = canvas.getContext('2d')
+    let width = 500, height = 400;
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.backgroundColor = "black";
+
+		context.strokeStyle = 'white';
+		context.lineWidth = 1;
+
+		var clear = function() {
+			context.clearRect(0, 0, width, height)
+		};
+
+		var fillRect = function(x, y, w, h) {
+			context.fillRect(x, y, w, h)
+		};
+
+		var strokeRect = function(x, y, w, h) {
+			context.strokeRect(x, y, w, h)
+		};
+
+		var Rect = function (x, y, w, h) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+
+			this.dx = 0;
+			this.dy = 0;
+
+			this.max = 10;
+			this.dd = 0.1;
+
+			this.fall = true;
+		};
+
+		Rect.prototype = {
+			draw : function() {
+				fillRect(this.x, this.y, this.w, this.h)
+			},
+
+			move : function () {
+				this.x += this.dx;
+				this.y += this.dy;
+			},
+
+			grav : function() {
+				if(!this.fall)return;
+        if(this.y + this.h / 1.5 > height - 100) {
+          this.max = 2
+          this.dd = 0.02
+        };
+        if(this.dy > this.max) {
+          this.dy = this.dy / this.max;
+        };
+
+				this.dy += this.dy <= this.max ? this.dd : 0;
+				if(this.y + this.h >= height){
+					this.y = height - this.h;
+				//	this.dy /= 2;
+					this.dy = 0;
+				}
+
+				if(Math.abs(this.dy) < this.dd * 2 && this.y + this.h >= height){
+					this.fall = false;
+					this.dy = 0;
+				}
+			}
+		};
+
+		var rect = [];
+
+		var mouse = {
+			x : 0,
+			y : 0
+		};
+
+		canvas.onclick = function () {
+			rect.push(new Rect(mouse.x - 15, mouse.y - 15, 30, 30))
+		};
+
+		canvas.onmousemove = function(e) {
+			mouse.x = e.pageX - 6;
+			mouse.y = e.pageY - 6;
+		};
+
+		setInterval(function(){
+			clear();
+      context.globalAlpha = 1
+      context.fillStyle = "yellow";
+			for(i in rect){
+				rect[i].grav();
+				rect[i].move();
+        rect[i].draw();
+      }
+
+				strokeRect(mouse.x - 15, mouse.y - 15, 30, 30)
+
+        context.globalAlpha = 0.3;
+        context.fillStyle = "#8bdbff";
+        fillRect(0, height - 100, width, height)
+        context.fillStyle = "#8bdbff";
+        fillRect(0, height - 70, width, height)
+        context.fillStyle = "#8bdbff";
+        fillRect(0, height - 40, width, height)
+		}, 1000 / 60)
+
+
+  </script>
+</body>
+</html>

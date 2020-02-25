@@ -1,0 +1,65 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Mouse Speed</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+
+
+    let canvas = document.getElementById('canvas');
+    let context = canvas.getContext('2d')
+    let width = 500, height = 400;
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.backgroundColor = "black";
+
+		context.fillStyle = "yellow";
+		context.strokeStyle = 'white';
+		context.lineWidth = 1;
+
+		var clear = function() {
+			context.clearRect(0, 0, width, height)
+		};
+
+		var fillRect = function(x, y, w, h) {
+			context.fillRect(x, y, w, h)
+		};
+
+		var mouse = {
+			x : 0,
+			y : 0,
+
+			speedX : 0,
+			speedY : 0,
+
+			oldX : 0,
+			oldY : 0,
+
+			update : function() {
+				this.speedX = Math.abs(this.x - this.oldX);
+				this.speedY = Math.abs(this.y - this.oldY);
+
+				this.oldX = this.x;
+				this.oldY = this.y;
+			}
+		};
+
+		canvas.onmousemove = function(e) {
+			mouse.x = e.pageX - 10;
+			mouse.y = e.pageY - 10;
+		};
+
+		setInterval(function () {
+			clear()
+			fillRect(10, 10, 50 + mouse.speedX, 40)
+			fillRect(10, 55, 50 + mouse.speedY, 40)
+			mouse.update()
+		}, 1000 / 60)
+
+
+  </script>
+</body>
+</html>
