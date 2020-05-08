@@ -1,0 +1,5 @@
+methods in arrays:
+push/pop - ading and removing the last argument
+shift/unshift - removing and adding the first argument
+indexOf - getting index of the argument
+slice - 
